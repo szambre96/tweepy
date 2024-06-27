@@ -745,7 +745,7 @@ class StreamingClient(BaseClient, BaseStream):
             self._connect(method, endpoint, params=params)
 
     def get_rules(self, **params):
-        """get_rules(*, ids)
+        """get_rules(*, pagination_token, ids)
 
         Return a list of rules currently active on the streaming endpoint,
         either as a list or individually.
@@ -755,6 +755,9 @@ class StreamingClient(BaseClient, BaseStream):
         ids : Union[List[str], str]
             Comma-separated list of rule IDs. If omitted, all rules are
             returned.
+        pagination_token : Optional[str]
+            This parameter is used to get the next page of results if the
+            response contains a pagination_token.
 
         Returns
         -------
@@ -766,7 +769,7 @@ class StreamingClient(BaseClient, BaseStream):
         """
         return self._make_request(
             "GET", f"/2/tweets/search/stream/rules", params=params,
-            endpoint_parameters=("ids",), data_type=StreamRule
+            endpoint_parameters=("ids", "pagination_token"), data_type=StreamRule
         )
 
     def sample(self, *, threaded=False, **params):
